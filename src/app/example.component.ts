@@ -42,13 +42,14 @@ export class ExampleComponent {
   // dropdownLogicConfigurations: DropdownLogicConfig[];
   // dropdowTemplateConfigurations: DropdownTemplateConfig[];
 
-  form: FormGroup | null = null;
+  form: FormGroup;
 
   constructor() {
     // window['a'] = this;
     this.dropdowns = this.createDropdowns();
     // this.dropdownLogicConfigurations = this.createDropdownsConfiguration();
     this.form = this.createForm(this.dropdowns);
+    this.createSubscribes();
   }
 
   // Configurations.
@@ -113,12 +114,20 @@ export class ExampleComponent {
   private createForm(dropdowns: Dropdowns): FormGroup {
     const formGroup = new FormGroup({});
 
-    Object.entries(this.dropdowns).forEach(([k, v]) => {
-      console.log(k, ' - ', v);
+    Object.values(dropdowns).forEach((v) => {
       formGroup.addControl(v.id, new FormControl());
     });
 
     return formGroup;
+  }
+
+  private createSubscribes() {
+    Object.entries(this.form.controls).forEach(([k, v]) => {
+      console.log(k, ' - ', v);
+      v.valueChanges.subscribe((v1) => {
+        console.log('Selected value: ', v1);
+      });
+    });
   }
 
   // Others.
