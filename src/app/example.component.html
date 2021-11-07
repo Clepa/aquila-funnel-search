@@ -1,0 +1,55 @@
+<form [formGroup]="form">
+  <div nxLayout="grid">
+    <div nxRow>
+      <div nxCol="12,6,6">
+        <ng-container
+          *ngTemplateOutlet="
+            basicDropdown;
+            context: { form: form, name: 'd1', elems: d1Elems, label: 'd1' }
+          "
+        ></ng-container>
+      </div>
+      <div nxCol="12,6,6">
+        <ng-container
+          *ngTemplateOutlet="
+            basicDropdown;
+            context: { form: form, name: 'd2', elems: d2Elems, label: 'd2' }
+          "
+        ></ng-container>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template
+  #basicDropdown
+  let-form="form"
+  let-name="name"
+  let-elems="elems"
+  let-label="label"
+>
+  <ng-container [formGroup]="form">
+    <nx-formfield [nxLabel]="label">
+      <nx-dropdown [formControlName]="name">
+        <nx-dropdown-item
+          *ngFor="let elem of elems"
+          [nxValue]="elem"
+        ></nx-dropdown-item>
+      </nx-dropdown>
+      <nx-error nxFormfieldError> Please select a value </nx-error>
+      <nx-message nxContext="info" nxFormfieldNote>
+        This field is required
+      </nx-message>
+    </nx-formfield>
+  </ng-container>
+</ng-template>
+
+<hr />
+<h1>Debug zone</h1>
+<div nxRow>
+  <div nxCol="12">
+    <p class="nx-margin-y-0">Form value: {{ form.value | json }}</p>
+    <p class="nx-margin-y-0">Form status: {{ form.status | json }}</p>
+    <p>{{ dropdowns | json }}</p>
+  </div>
+</div>
