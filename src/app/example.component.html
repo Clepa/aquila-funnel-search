@@ -5,7 +5,7 @@
         <ng-container
           *ngTemplateOutlet="
             basicDropdown;
-            context: { form: form, name: 'd1', elems: d1Elems, label: 'd1' }
+            context: { form: form, name: dropdowns.d1.id, template: dropdowns.d1.template}
           "
         ></ng-container>
       </div>
@@ -13,9 +13,38 @@
         <ng-container
           *ngTemplateOutlet="
             basicDropdown;
-            context: { form: form, name: 'd2', elems: d2Elems, label: 'd2' }
+            context: { form: form, name: dropdowns.d2.id, template: dropdowns.d2.template}
           "
         ></ng-container>
+      </div>
+      <div nxCol="12,6,6">
+        <ng-container
+          *ngTemplateOutlet="
+            basicDropdown;
+            context: { form: form, name: dropdowns.d3.id, template: dropdowns.d3.template}
+          "
+        ></ng-container>
+      </div>
+      <div nxCol="12,6,6">
+        <ng-container
+          *ngTemplateOutlet="
+            basicDropdown;
+            context: { form: form, name: dropdowns.d4.id, template: dropdowns.d4.template}
+          "
+        ></ng-container>
+      </div>
+      <div nxCol="12,6,6">
+        <ng-container
+          *ngTemplateOutlet="
+            basicDropdown;
+            context: { form: form, name: dropdowns.d5.id, template: dropdowns.d5.template}
+          "
+        ></ng-container>
+      </div>
+    </div>
+    <div nxRow>
+      <div nxCol="12,6,2">
+        <button nxButton="primary small-medium" type="button" (click)="search()">Search</button>
       </div>
     </div>
   </div>
@@ -25,31 +54,29 @@
   #basicDropdown
   let-form="form"
   let-name="name"
-  let-elems="elems"
-  let-label="label"
+  let-template="template"
 >
   <ng-container [formGroup]="form">
-    <nx-formfield [nxLabel]="label">
+    <nx-formfield [nxLabel]="template.label">
       <nx-dropdown [formControlName]="name">
         <nx-dropdown-item
-          *ngFor="let elem of elems"
+          *ngFor="let elem of typedDropdownTemplateConfig(template).elements"
           [nxValue]="elem"
         ></nx-dropdown-item>
       </nx-dropdown>
-      <nx-error nxFormfieldError> Please select a value </nx-error>
-      <nx-message nxContext="info" nxFormfieldNote>
-        This field is required
-      </nx-message>
+      <nx-error nxFormfieldError>This dropdown is required!</nx-error>
     </nx-formfield>
   </ng-container>
 </ng-template>
 
-<hr />
-<h1>Debug zone</h1>
+<hr/>
+<h1>Debug</h1>
 <div nxRow>
   <div nxCol="12">
     <p class="nx-margin-y-0">Form value: {{ form.value | json }}</p>
     <p class="nx-margin-y-0">Form status: {{ form.status | json }}</p>
-    <p>{{ dropdowns | json }}</p>
+    <p class="nx-margin-y-0">Form errors: {{ obtainErrors() | json }}</p>
+    <pre>{{obtainDependents() | json}}</pre>
+    <pre>{{ dropdowns | json }}</pre>
   </div>
 </div>
